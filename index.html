@@ -7,8 +7,8 @@
 	</head>
 	<body>
 
-		<div class="storeLocator">
-			<input type="text" id="address" class="controls" placeholder="Enter an address, city...">
+		<div id="storeLocator1" class="storeLocator">
+			<input type="text" class="input controls" placeholder="Enter an address, city...">
 			
 			<div id="map-canvas" class="map"></div>
 
@@ -32,6 +32,83 @@
 
 		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script src="http://maps.google.com/maps/api/js?sensor=false&amp;libraries=places"></script>
-		<script src="storelocator.js"></script>
+		<script src="jquery.storelocator.js"></script>
+		<script>
+			$(document).ready(function() {
+			    $('#storeLocator1').storeLocator({
+			    	fetchStoresFunction: fetchStores
+			    });
+			});
+
+			function fetchStores(lat, lng) {
+			    var allStores = [{
+			        id: 1,
+			        name: "My store #1",
+			        address: "12 Avenue Aristide Briand",
+			        zip: "35000",
+			        city: "Rennes",
+			        state: null,
+			        country: "France",
+			        latitude: 48.1105287,
+			        longitude: -1.664758
+			    }, {
+			        id: 2,
+			        name: "My store #2",
+			        address: "34 Boulevard de Metz",
+			        zip: "35000",
+			        city: "Rennes",
+			        state: null,
+			        country: "France",
+			        latitude: 48.1165501,
+			        longitude: -1.6581657
+			    }, {
+			        id: 3,
+			        name: "My store #3",
+			        address: "123 Boulevard de Ménilmontant",
+			        zip: "75020",
+			        city: "Paris",
+			        state: null,
+			        country: "France",
+			        latitude: 48.8659274,
+			        longitude: 2.3837267
+			    }, {
+			        id: 4,
+			        name: "My store #4",
+			        address: "35 rue Étienne Dollet",
+			        zip: "75020",
+			        city: "Paris",
+			        state: null,
+			        country: "France",
+			        latitude: 48.8683134,
+			        longitude: 2.3855789
+			    }];
+			    var nearbyStores = [];
+			    for (var i in allStores) {
+			        var store = allStores[i];
+			        var distance = getDistance(lat, lng, store.latitude, store.longitude);
+			        if (Math.abs(distance) < 10000) {
+			        	store.distance = Math.round(distance / 1000) + ' km';
+			            nearbyStores.push(store);
+			        }
+			    }
+			    return nearbyStores;
+			}
+
+			var rad = function(x) {
+			    return x * Math.PI / 180;
+			};
+
+			var getDistance = function(lat1, lng1, lat2, lng2) {
+			    var R = 6378137;
+			    var dLat = rad(lat2 - lat1);
+			    var dLong = rad(lng2 - lng1);
+			    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+			        Math.cos(rad(lat1)) * Math.cos(rad(lat2)) *
+			        Math.sin(dLong / 2) * Math.sin(dLong / 2);
+			    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+			    var d = R * c;
+			    return d;
+			};
+		</script>
 	</body>
 </html>
