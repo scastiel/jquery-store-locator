@@ -3,8 +3,8 @@ var map = null;
 var markers = {};
 var infowindow = null;
 
-function fetchStores() {
-    return [{
+function fetchStores(lat, lng) {
+    var allStores = [{
         id: 1,
         name: "My store #1",
         address: "12 Avenue Aristide Briand",
@@ -45,11 +45,38 @@ function fetchStores() {
         latitude: 48.8683134,
         longitude: 2.3855789
     }];
+    var nearbyStores = [];
+    for (var i in allStores) {
+        var store = allStores[i];
+        var distance = getDistance(lat, lng, store.latitude, store.longitude);
+        if (Math.abs(distance) < 10000) {
+        	store.distance = Math.round(distance / 1000) + ' km';
+            nearbyStores.push(store);
+        }
+    }
+    return nearbyStores;
 }
 
-function loadStores() {
+var rad = function(x) {
+    return x * Math.PI / 180;
+};
 
-    stores = fetchStores();
+var getDistance = function(lat1, lng1, lat2, lng2) {
+    var R = 6378137; // Earth’s mean radius in meter
+    var dLat = rad(lat2 - lat1);
+    var dLong = rad(lng2 - lng1);
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(rad(lat1)) * Math.cos(rad(lat2)) *
+        Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d; // returns the distance in meter
+};
+
+function loadStores(lat, lng) {
+
+    if (!stores || lat || lng)
+        stores = fetchStores(lat, lng);
     updateListWithStores(stores);
 
     var bounds = map.getBounds();
@@ -109,8 +136,8 @@ function updateListWithStores(stores) {
 
         var $store = $storeTemplate.clone();
         $store.removeAttr('data-store-template')
-        	.attr('data-store', JSON.stringify(store))
-        	.attr('data-store-id', store.id);
+            .attr('data-store', JSON.stringify(store))
+            .attr('data-store-id', store.id);
         fillDomElementWithStore($store, store);
         $link = $store.find('[data-store-link-to-map]');
         $link.click((function(store) {
@@ -201,7 +228,7 @@ $(document).ready(function() {
             map.setZoom(15);
         }
 
-        loadStores();
+        loadStores(map.getCenter().lat(), map.getCenter().lng());
     });
 
     google.maps.event.addListener(map, 'dragend', loadStores);

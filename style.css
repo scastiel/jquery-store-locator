@@ -58,3 +58,7 @@
 	border: 1px solid lightgray;
 	float: left;
 }
+.distance {
+	float: right;
+	color: lightgray;
+}
