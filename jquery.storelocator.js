@@ -5,6 +5,7 @@
 	var map = null;
 	var markers = {};
 	var infowindow = null;
+	var enableGeolocation = true;
 
 	function error(msg) {
 		if( console && console.error ) {
@@ -12,25 +13,25 @@
 		}
 	}
 
-	function fetchStores(lat, lng) {
-		return [];
+	function fetchStores(lat, lng, callback) {
+		callback([]);
 	}
 
 	function loadStores(lat, lng) {
-		if (!stores || lat || lng)
-			stores = fetchStores(lat, lng);
-		updateListWithStores(stores);
+		fetchStores(lat, lng, function(resultStores) {
+			stores = resultStores;
+			updateListWithStores(stores);
+			placeStoresMarkers();
+		});
+	}
 
+	function placeStoresMarkers() {
 		var bounds = map.getBounds();
 		if (!bounds) {
-			window.setTimeout(loadStores, 500);
+			window.setTimeout(placeStoresMarkers, 500);
 			return;
 		}
 
-		placeStoresMarkers(bounds);
-	}
-
-	function placeStoresMarkers(bounds) {
 		for (var i in stores) {
 			placeMarkerForStore(stores[i], bounds);
 		}
@@ -150,8 +151,10 @@
 
 	$.fn.storeLocator = function(options) {
 
-		if( options.fetchStoresFunction )
+		if( options.fetchStoresFunction !== null )
 			fetchStores = options.fetchStoresFunction;
+		if( options.enableGeolocation !== null )
+			enableGeolocation = options.enableGeolocation;
 
 		if( this.length == 0 )
 			return;
@@ -174,13 +177,14 @@
 		var input = $this.find('.input')[0];
 		enableAutocomplete(input);
 
-		google.maps.event.addListener(map, 'dragend', loadStores);
-		google.maps.event.addListener(map, 'zoom_changed', loadStores);
+		google.maps.event.addListener(map, 'dragend', placeStoresMarkers);
+		google.maps.event.addListener(map, 'zoom_changed', placeStoresMarkers);
 
-		if (navigator.geolocation) {
+		if (enableGeolocation && navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 				map.setCenter(pos);
+				loadStores(pos.lat(), pos.lng());
 			});
 		}
 
