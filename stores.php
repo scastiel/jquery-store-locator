@@ -1,93 +1,42 @@
 <?php
 
-function rad($x) {
-    return $x * pi() / 180;
-};
+// Insert here the information to connect to your MySQL server.
+$db_host = "127.0.0.1";
+$db_user = "root";
+$db_pass = "root";
+$db_name = "storelocator";
 
-function getDistance($lat1, $lng1, $lat2, $lng2) {
-    $R = 6378137;
-    $dLat = rad($lat2 - $lat1);
-    $dLong = rad($lng2 - $lng1);
-    $a = sin($dLat / 2) * sin($dLat / 2) +
-        cos(rad($lat1)) * cos(rad($lat2)) *
-        sin($dLong / 2) * sin($dLong / 2);
-    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-    $d = $R * $c;
-    return $d;
-};
-
-$allStores = array(
-	array(
-	    'id' =>  1,
-	    'name' =>  "My store #1",
-	    'address' =>  "12 Avenue Aristide Briand",
-	    'zip' =>  "35000",
-	    'city' =>  "Rennes",
-	    'state' =>  null,
-	    'country' =>  "France",
-	    'latitude' =>  48.1105287,
-	    'longitude' =>  -1.664758
-	),
-	array(
-	    'id' =>  2,
-	    'name' =>  "My store #2",
-	    'address' =>  "34 Boulevard de Metz",
-	    'zip' =>  "35000",
-	    'city' =>  "Rennes",
-	    'state' =>  null,
-	    'country' =>  "France",
-	    'latitude' =>  48.1165501,
-	    'longitude' =>  -1.6581657
-	),
-	array(
-	    'id' =>  3,
-	    'name' =>  "My store #3",
-	    'address' =>  "123 Boulevard de Ménilmontant",
-	    'zip' =>  "75020",
-	    'city' =>  "Paris",
-	    'state' =>  null,
-	    'country' =>  "France",
-	    'latitude' =>  48.8659274,
-	    'longitude' =>  2.3837267
-	),
-	array(
-	    'id' =>  4,
-	    'name' =>  "My store #4",
-	    'address' =>  "35 rue Étienne Dollet",
-	    'zip' =>  "75020",
-	    'city' =>  "Paris",
-	    'state' =>  null,
-	    'country' =>  "France",
-	    'latitude' =>  48.8683134,
-	    'longitude' =>  2.3855789
-	),
-	array(
-	    'id' =>  5,
-	    'name' =>  "My store #5",
-	    'address' =>  "2 boulevard Saint-Martin",
-	    'zip' =>  "75003",
-	    'city' =>  "Paris",
-	    'state' =>  null,
-	    'country' =>  "France",
-	    'latitude' =>  48.8684958,
-	    'longitude' =>  2.3587297
-	)
-);
-
+// Parameters
 $lat = $_REQUEST['lat'] ?: 0;
 $lng = $_REQUEST['lng'] ?: 0;
 
-$nearbyStores = array();
-foreach( $allStores as $store ) {
-    $distance = getDistance($lat, $lng, $store['latitude'], $store['longitude']);
-    if (abs($distance) < 10000) {
-    	$store['distance'] = $distance / 1000;
-    	$store['distance-kilometers'] = round($distance / 1000) . ' km';
-    	$store['distance-miles'] = round($distance / 1600) . ' mi';
-        $nearbyStores[] = $store;
-    }
-}
-usort($nearbyStores, function($store1, $store2) { return $store2['distance'] - $store2['distance']; });
+// SQL request. The complexe part is here to compute the distance
+// between the position passed in the parameters and each store.
+$sql = "SELECT id, name, address, zip, city, state, country, latitude, longitude,
+			((ACOS(SIN($lat * PI() / 180) * SIN(latitude * PI() / 180) + COS($lat * PI() / 180) * COS(latitude * PI() / 180) * COS(($lng - longitude) * PI() / 180)) * 180 / PI()) * 60 * 1.1515) AS distance 
+		FROM stores 
+		HAVING distance <= 10 
+		ORDER BY distance ASC";
 
+// Connexion to MySQL server.
+$mysqli = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+
+// Execution of the SELECT query.
+$res = mysqli_query($mysqli, $sql);
+
+// For each stores...
+$nearbyStores = array();
+while( $store = mysqli_fetch_assoc($res) ) {
+
+	// We construct two strings containing the distance in kilometers and miles.
+	$store['distance-kilometers'] = round($store['distance']) . ' km';
+	$store['distance-miles'] = round($store['distance'] / 1.6) . ' mi';
+
+	// We add the store to the result array.
+	$nearbyStores[] = $store;
+
+}
+
+// We return the stores in JSON format.
 header('Content-type: application/json');
 echo json_encode($nearbyStores);
