@@ -3,31 +3,32 @@
 	<head>
 		<meta charset="utf-8">
 		<title>My store locator</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
 
-		<label>
-			Address/city:
-			<input type="text" id="address">
-		</label>
-		<button onclick="localiser()">OK</button>
+		<div class="storeLocator">
+			<input type="text" id="address" class="controls" placeholder="Enter an address, city...">
+			
+			<div id="map-canvas" class="map"></div>
 
-		<div id="map-canvas" style="width: 600px; height: 400px; border: 1px solid lightgray"></div>
+			<ul id="stores" data-list-stores>
+				<li class="store" data-store-template style="display: none">
+					<div data-store-link-to-map>
+						<strong><span href="#" data-store-attr="name"></span></strong><br>
+						<span data-store-attr="address"></span><br>
+						<span data-store-attr="zip"></span> <span data-store-attr="city"></span><br>
+						<span data-store-attr="country"></span>
+					</div>
+				</li>
+			</ul>
 
-		<ul data-list-stores>
-			<li data-store-template style="display: none">
-				<strong><a href="#" data-store-link-to-map data-store-attr="name"></a></strong><br>
+			<div style="display: none" data-store-infowindow-template>
+				<strong><span data-store-link-to-map data-store-attr="name"></span></strong><br>
 				<span data-store-attr="address"></span><br>
 				<span data-store-attr="zip"></span> <span data-store-attr="city"></span><br>
 				<span data-store-attr="country"></span>
-			</li>
-		</ul>
-
-		<div style="display: none" data-store-infowindow-template>
-			<strong><span data-store-link-to-map data-store-attr="name"></span></strong><br>
-			<span data-store-attr="address"></span><br>
-			<span data-store-attr="zip"></span> <span data-store-attr="city"></span><br>
-			<span data-store-attr="country"></span>
+			</div>
 		</div>
 
 		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>

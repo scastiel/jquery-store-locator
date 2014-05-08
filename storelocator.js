@@ -49,29 +49,29 @@ function fetchStores() {
 
 function loadStores() {
 
-	stores = fetchStores();
+    stores = fetchStores();
     updateListWithStores(stores);
 
     var bounds = map.getBounds();
-	if( !bounds ) {
-		window.setTimeout(loadStores, 500);
-		return;
-	}
+    if (!bounds) {
+        window.setTimeout(loadStores, 500);
+        return;
+    }
 
-	placeStoresMarkers(bounds);
+    placeStoresMarkers(bounds);
 }
 
 function placeStoresMarkers(bounds) {
-	for (var i in stores) {
+    for (var i in stores) {
         placeMarkerForStore(stores[i], bounds);
     }
 }
 
 function placeMarkerForStore(store, bounds) {
-	var id = store.id;
+    var id = store.id;
     var latLng = new google.maps.LatLng(store.latitude, store.longitude);
-    if( !bounds || bounds.contains(latLng) ) {
-    	if (!markers[id]) {
+    if (!bounds || bounds.contains(latLng)) {
+        if (!markers[id]) {
             markers[id] = new google.maps.Marker({
                 position: latLng,
                 map: map,
@@ -79,21 +79,24 @@ function placeMarkerForStore(store, bounds) {
             });
             google.maps.event.addListener(markers[id], 'click', (function(store, map) {
                 return function() {
-                    getInfoWindowForStore(store).open(map, markers[store.id]);
+                    openInfoWindowForStore(store);
                 }
             })(store, map));
         }
     } else {
-    	if (markers[id]) {
-    		markers[id].setMap(null);
-    		delete markers[id];
-    	}
+        if (markers[id]) {
+            markers[id].setMap(null);
+            delete markers[id];
+        }
     }
     return markers[id];
 }
 
 function openInfoWindowForStore(store) {
-	getInfoWindowForStore(store).open(map, markers[store.id]);
+    getInfoWindowForStore(store).open(map, markers[store.id]);
+
+    $('[data-store-id=' + store.id + ']').addClass('active');
+    $('[data-store-id!=' + store.id + ']').removeClass('active');
 }
 
 function updateListWithStores(stores) {
@@ -105,19 +108,21 @@ function updateListWithStores(stores) {
         var store = stores[i];
 
         var $store = $storeTemplate.clone();
-        $store.removeAttr('data-store-template').attr('data-store', JSON.stringify(store));
+        $store.removeAttr('data-store-template')
+        	.attr('data-store', JSON.stringify(store))
+        	.attr('data-store-id', store.id);
         fillDomElementWithStore($store, store);
         $link = $store.find('[data-store-link-to-map]');
         $link.click((function(store) {
-        	return function(event) {
-        		event.preventDefault();
-        		if( !markers[store.id] )
-        			markers[store.id] = placeMarkerForStore(store);
-        		map.setCenter(markers[store.id].position);
-        		map.setZoom(15);
-        		openInfoWindowForStore(store);
-	        };
-	    })(store));
+            return function(event) {
+                event.preventDefault();
+                if (!markers[store.id])
+                    markers[store.id] = placeMarkerForStore(store);
+                map.setCenter(markers[store.id].position);
+                map.setZoom(15);
+                openInfoWindowForStore(store);
+            };
+        })(store));
         $store.show();
 
         $store.appendTo($list);
@@ -125,26 +130,26 @@ function updateListWithStores(stores) {
 }
 
 function fillDomElementWithStore($domElement, store) {
-	for (var property in store) {
+    for (var property in store) {
         $domElement.find('[data-store-attr="' + property + '"]').html(store[property]);
     }
 }
 
 function createInfoWindowContentForStore(store) {
-	var $contentTemplate = $('[data-store-infowindow-template]');
-	var $content = $contentTemplate.clone();
-	fillDomElementWithStore($content, store);
-	var content = $content.html();
-	$content.remove();
-	return content;
+    var $contentTemplate = $('[data-store-infowindow-template]');
+    var $content = $contentTemplate.clone();
+    fillDomElementWithStore($content, store);
+    var content = $content.html();
+    $content.remove();
+    return content;
 }
 
 function getInfoWindowForStore(store) {
-	if( infowindow )
-		infowindow.close();
-	else 
-		infowindow = new google.maps.InfoWindow;
-	var content = createInfoWindowContentForStore(store)
+    if (infowindow)
+        infowindow.close();
+    else
+        infowindow = new google.maps.InfoWindow;
+    var content = createInfoWindowContentForStore(store)
     infowindow.setContent(content);
     return infowindow;
 }
@@ -177,6 +182,28 @@ $(document).ready(function() {
         zoom: 15,
         center: new google.maps.LatLng(-34.397, 150.644)
     });
+
+    var input = document.getElementById('address');
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.bindTo('bounds', map);
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
+            return;
+        }
+
+        if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+        } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(15);
+        }
+
+        loadStores();
+    });
+
     google.maps.event.addListener(map, 'dragend', loadStores);
     google.maps.event.addListener(map, 'zoom_changed', loadStores);
 
