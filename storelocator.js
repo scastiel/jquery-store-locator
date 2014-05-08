@@ -206,8 +206,8 @@ function codeAddress(address, callback) {
 
 $(document).ready(function() {
     map = new google.maps.Map(document.getElementById("map-canvas"), {
-        zoom: 15,
-        center: new google.maps.LatLng(-34.397, 150.644)
+        zoom: 13,
+        center: new google.maps.LatLng(48.858877, 2.3470598)
     });
 
     var input = document.getElementById('address');
@@ -241,8 +241,5 @@ $(document).ready(function() {
         });
     }
 
-    loadStores();
-    if (stores.length > 0) {
-        map.setCenter(new google.maps.LatLng(stores[0].latitude, stores[0].longitude));
-    }
+    loadStores(map.getCenter().lat(), map.getCenter().lng());
 });

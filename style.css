@@ -4,7 +4,7 @@
 	height: 400px;
 }
 .storeLocator * {
-	font-family: sans-serif;
+	font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 }
 .controls {
@@ -30,7 +30,6 @@
     border-color: #4d90fe;
     margin-left: -1px;
     padding-left: 14px;
-    /* Regular padding-left + 1. */
     width: 301px;
 }
 #stores {
@@ -38,19 +37,21 @@
 	padding: 0;
 	list-style-type: none;
 	margin: 0;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 	float: right;
 	width: 240px;
 	max-height: 100%;
 	overflow-y: auto;
 }
 .store {
-	padding: 5px;
-	border-bottom: 1px solid lightgray;
+	padding: 10px 5px;
 	cursor: pointer;
+	border: 1px solid transparent;
+}
+.store:hover {
+	background-color: #eee;
 }
 .store.active {
-	background-color: lightblue;
+	border-color: lightgray;
 }
 .map {
 	width: 600px; 
