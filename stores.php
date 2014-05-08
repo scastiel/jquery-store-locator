@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * This script is an example PHP script that shows you what can
+ * be called by the store locator plugin. It is very simple, but
+ * should help you understand how you can integrate the plugin
+ * in YOUR application.
+ * 
+ * We suppose here that you have a working MySQL server (provide
+ * its connection information below), which contains a database
+ * (storelocator), which itself contains a table, "stores". See
+ * the "create_table.sql" and "example_data.sql" to reproduce this
+ * example on your system.
+ */
+
 // Insert here the information to connect to your MySQL server.
 $db_host = "127.0.0.1";
 $db_user = "root";

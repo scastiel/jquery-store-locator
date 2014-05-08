@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `stores`;
 CREATE TABLE `stores` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
