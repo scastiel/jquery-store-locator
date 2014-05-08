@@ -1,5 +1,4 @@
 .storeLocator {
-	/*border: 1px solid black;*/
 	width: 850px;
 	height: 400px;
 }
@@ -7,7 +6,7 @@
 	font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 }
-.controls {
+.storeLocator .controls {
     margin-top: 16px;
     border: 1px solid transparent;
     border-radius: 2px 0 0 2px;
@@ -17,7 +16,7 @@
     outline: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
-.input {
+.storeLocator .input {
     background-color: #fff;
     padding: 0 11px 0 13px;
     width: 300px;
@@ -26,13 +25,13 @@
     font-weight: 300;
     text-overflow: ellipsis;
 }
-.input:focus {
+.storeLocator .input:focus {
     border-color: #4d90fe;
     margin-left: -1px;
     padding-left: 14px;
     width: 301px;
 }
-#stores {
+.storeLocator #stores {
 	background-color: #fff;
 	padding: 0;
 	list-style-type: none;
@@ -42,24 +41,24 @@
 	max-height: 100%;
 	overflow-y: auto;
 }
-.store {
+.storeLocator .store {
 	padding: 10px 5px;
 	cursor: pointer;
 	border: 1px solid transparent;
 }
-.store:hover {
+.storeLocator .store:hover {
 	background-color: #eee;
 }
-.store.active {
+.storeLocator .store.active {
 	border-color: lightgray;
 }
-.map {
+.storeLocator .map {
 	width: 600px; 
 	height: 100%; 
 	border: 1px solid lightgray;
 	float: left;
 }
-.distance {
+.storeLocator .distance {
 	float: right;
 	color: lightgray;
 }

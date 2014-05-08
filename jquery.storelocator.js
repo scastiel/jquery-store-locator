@@ -18,7 +18,11 @@
 	}
 
 	function loadStores(lat, lng) {
+		$this.find('.store:not([data-store-template])').remove();
+		$this.find('.loading').show();
+		$this.find('.no-store').hide();
 		fetchStores(lat, lng, function(resultStores) {
+			$this.find('.loading').hide();
 			stores = resultStores;
 			updateListWithStores(stores);
 			placeStoresMarkers();
@@ -74,28 +78,33 @@
 		$list.find('[data-store]').remove();
 		var $storeTemplate = $list.find('[data-store-template]');
 
-		for (var i in stores) {
-			var store = stores[i];
+		if( stores.length > 0 ) {
+			for (var i in stores) {
+				var store = stores[i];
 
-			var $store = $storeTemplate.clone();
-			$store.removeAttr('data-store-template')
-				.attr('data-store', JSON.stringify(store))
-				.attr('data-store-id', store.id);
-			fillDomElementWithStore($store, store);
-			$link = $store.find('[data-store-link-to-map]');
-			$link.click((function(store) {
-				return function(event) {
-					event.preventDefault();
-					if (!markers[store.id])
-						markers[store.id] = placeMarkerForStore(store);
-					map.setCenter(markers[store.id].position);
-					map.setZoom(15);
-					openInfoWindowForStore(store);
-				};
-			})(store));
-			$store.show();
+				var $store = $storeTemplate.clone();
+				$store.removeAttr('data-store-template')
+					.attr('data-store', JSON.stringify(store))
+					.attr('data-store-id', store.id);
+				fillDomElementWithStore($store, store);
+				$link = $store.find('[data-store-link-to-map]');
+				$link.click((function(store) {
+					return function(event) {
+						event.preventDefault();
+						if (!markers[store.id])
+							markers[store.id] = placeMarkerForStore(store);
+						map.setCenter(markers[store.id].position);
+						map.setZoom(15);
+						openInfoWindowForStore(store);
+					};
+				})(store));
+				$store.show();
 
-			$store.appendTo($list);
+				$store.appendTo($list);
+			}
+			$this.find('.no-store').hide();
+		} else {
+			$this.find('.no-store').show();
 		}
 	}
 
