@@ -1,4 +1,6 @@
-This store locator is a module you can fully integrate in your website, with your design and with your backend. With just a few configuration you'll get a working store locator for your business, which uses the Google Maps API, but you can also customize it the way yout want it to be.
+# Simple jQuery Store Locator
+
+This store locator is a module you can fully integrate in your website, with your design and with your backend. With just a few configuration you'll get a working store locator for your business, which uses the Google Maps API. You can also customize it the way yout want it to be.
 
 ## Features
 
