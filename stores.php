@@ -25,7 +25,7 @@ $lng = $_REQUEST['lng'] ?: 0;
 
 // SQL request. The complexe part is here to compute the distance
 // between the position passed in the parameters and each store.
-$sql = "SELECT id, name, address, zip, city, state, country, latitude, longitude,
+$sql = "SELECT id, name, address, zip, city, state, country, url, latitude, longitude,
 			((ACOS(SIN($lat * PI() / 180) * SIN(latitude * PI() / 180) + COS($lat * PI() / 180) * COS(latitude * PI() / 180) * COS(($lng - longitude) * PI() / 180)) * 180 / PI()) * 60 * 1.1515) AS distance 
 		FROM stores 
 		HAVING distance <= 10 

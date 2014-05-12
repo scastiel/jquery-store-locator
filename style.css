@@ -63,3 +63,9 @@
 	float: right;
 	color: lightgray;
 }
+.storeLocator .store a {
+	color: #428bca
+}
+.storeLocator .store a:hover {
+	color: #2a6496
+}

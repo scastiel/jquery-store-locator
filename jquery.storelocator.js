@@ -90,7 +90,6 @@
 				$link = $store.find('[data-store-link-to-map]');
 				$link.click((function(store) {
 					return function(event) {
-						event.preventDefault();
 						if (!markers[store.id])
 							markers[store.id] = placeMarkerForStore(store);
 						map.setCenter(markers[store.id].position);
@@ -109,9 +108,22 @@
 	}
 
 	function fillDomElementWithStore($domElement, store) {
-		for (var property in store) {
-			$domElement.find('[data-store-attr="' + property + '"]').html(store[property]);
-		}
+		$domElement.find('[data-store-attr]').each(function() {
+			var $elt = $(this);
+			var data = $elt.data('store-attr');
+			if( typeof data == 'string' ) {
+				if( store[data] )
+					$elt.html(store[data]);
+			} else if( typeof data == 'object' ) {
+				if( data.content )
+					$elt.html(store[data.content]);
+				for( var attribute in data ) {
+					if( attribute == 'content' ) continue;
+					if( store[data[attribute]] )
+						$elt.attr(attribute, store[data[attribute]]);
+				}
+			}
+		})
 	}
 
 	function createInfoWindowContentForStore(store) {

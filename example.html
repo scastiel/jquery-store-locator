@@ -64,7 +64,22 @@
 						-->
 
 						<span class="distance" data-store-attr="distance-miles"></span>
-						<strong><span href="#" data-store-attr="name"></span></strong><br>
+
+						<!--
+							Here is a new notation for the attibute "data-store-attr"
+							to specify that it is not only the content that should be
+							replaced by a store data, but also the content of an attribute
+							(in this case "href"). The syntax is :
+								data-store-attr='{"content":"the store property which will
+								be used to replace the element's content","attr1":"property
+								used for attribute attr1","attr2":"etc"}'
+							The attribute content must be valid JSON.
+							Note that the following notations are equivalent:
+								<span data-store-attr="name"></span>
+								<span data-store-attr='{"content":"name"}''></span>
+						-->
+						<strong><a target="_blank" href="#" data-store-attr='{"content":"name","href":"url"}'></a></strong><br>
+						
 						<span data-store-attr="address"></span><br>
 						<span data-store-attr="zip"></span> <span data-store-attr="city"></span>
 					</div>
