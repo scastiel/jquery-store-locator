@@ -6,6 +6,7 @@
 	var markers = {};
 	var infowindow = null;
 	var enableGeolocation = true;
+	var defaultLocation = { latitude: 48.858877, longitude: 2.3470598 };
 
 	function error(msg) {
 		if( console && console.error ) {
@@ -172,10 +173,12 @@
 
 	$.fn.storeLocator = function(options) {
 
-		if( options.fetchStoresFunction !== null )
+		if( options.fetchStoresFunction != null )
 			fetchStores = options.fetchStoresFunction;
-		if( options.enableGeolocation !== null )
+		if( options.enableGeolocation != null )
 			enableGeolocation = options.enableGeolocation;
+		if( options.defaultLocation != null )
+			defaultLocation = options.defaultLocation;
 
 		if( this.length == 0 )
 			return;
@@ -188,7 +191,7 @@
 		}
 		map = new google.maps.Map($this.find(".map")[0], {
 			zoom: 13,
-			center: new google.maps.LatLng(48.858877, 2.3470598)
+			center: new google.maps.LatLng(defaultLocation.latitude, defaultLocation.longitude)
 		});
 
 		if( $this.find('.input').length == 0 ) {
