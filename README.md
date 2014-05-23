@@ -1,6 +1,12 @@
 # Simple jQuery Store Locator
 
-This store locator is a module you can fully integrate in your website, with your design and with your backend. With just a few configuration you'll get a working store locator for your business, which uses the Google Maps API. You can also customize it the way yout want it to be.
+This store locator is a module you can fully integrate in your website, with your design and with your backend. With just a few configuration you'll get a working store locator for your business, which uses the Google Maps API. You can also customize it the way you want it to be.
+
+## Demo
+
+A demo is available [here](http://scastiel.github.io/jquery-store-locator/demo.html).
+
+## License
 
 The plugin license is LGPL for non-commercial use (see LICENSE.txt). Want a commercial license? Get it on [Binpress](http://www.binpress.com/app/simple-jquery-store-locator/2060).
 
@@ -14,7 +20,6 @@ The plugin license is LGPL for non-commercial use (see LICENSE.txt). Want a comm
 * Stores are sorted from the nearest to the furthest store ;
 * Fully **working example** is included ;
 * Standard HTML5: works on every modern web browser, including mobile.
-
 
 ## Requirements
 
