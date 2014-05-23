@@ -8,7 +8,7 @@ A demo is available [here](http://scastiel.github.io/jquery-store-locator/demo.h
 
 ## License
 
-The plugin license is LGPL for non-commercial use (see LICENSE.txt). Want a commercial license? Get it on [Binpress](http://www.binpress.com/app/simple-jquery-store-locator/2060).
+The plugin license is LGPL for non-commercial use (see LICENSE.txt). Want a commercial license? Get it on [Binpress](http://www.binpress.com/app/simple-jquery-store-locator/2060?ad=33854).
 
 ## Features
 
