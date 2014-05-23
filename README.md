@@ -2,6 +2,8 @@
 
 This store locator is a module you can fully integrate in your website, with your design and with your backend. With just a few configuration you'll get a working store locator for your business, which uses the Google Maps API. You can also customize it the way yout want it to be.
 
+The plugin license is LGPL for non-commercial use (see LICENSE.txt). Want a commercial license? Get it on [Binpress](http://www.binpress.com/app/simple-jquery-store-locator/2060).
+
 ## Features
 
 * Google Maps API (no key required) ;
