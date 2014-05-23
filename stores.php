@@ -41,22 +41,31 @@ $sql = "SELECT id, name, address, zip, city, state, country, url, latitude, long
 		ORDER BY distance ASC";
 
 // Connexion to MySQL server.
-$mysqli = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+$mysqli = @mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+if( !$mysqli ) {
+	$protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
+	header("$protocol 500 Internal Server Error");
+	die(json_encode(array('error' => "Database connection error.")));
+}
+
+// We keep the stores in this array.
+$nearbyStores = array();
 
 // Execution of the SELECT query.
-$res = mysqli_query($mysqli, $sql);
+$res = @mysqli_query($mysqli, $sql);
+if( $res ) {
 
-// For each stores...
-$nearbyStores = array();
-while( $store = mysqli_fetch_assoc($res) ) {
+	// For each stores...
+	while( $store = @mysqli_fetch_assoc($res) ) {
 
-	// We construct two strings containing the distance in kilometers and miles.
-	$store['distance-kilometers'] = round($store['distance']) . ' km';
-	$store['distance-miles'] = round($store['distance'] / 1.6) . ' mi';
+		// We construct two strings containing the distance in kilometers and miles.
+		$store['distance-kilometers'] = round($store['distance']) . ' km';
+		$store['distance-miles'] = round($store['distance'] / 1.6) . ' mi';
 
-	// We add the store to the result array.
-	$nearbyStores[] = $store;
+		// We add the store to the result array.
+		$nearbyStores[] = $store;
 
+	}
 }
 
 // We return the stores in JSON format.
