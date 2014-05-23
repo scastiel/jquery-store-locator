@@ -19,9 +19,18 @@ $db_user = "root";
 $db_pass = "root";
 $db_name = "storelocator";
 
+// Response is always JSON.
+header('Content-type: application/json');
+
 // Parameters
-$lat = $_REQUEST['lat'] ?: 0;
-$lng = $_REQUEST['lng'] ?: 0;
+$lat = floatval($_REQUEST['lat']);
+$lng = floatval($_REQUEST['lng']);
+if( !$lat || !$lng )
+{
+	$protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
+	header("$protocol 400 Bad Request");
+	die(json_encode(array('error' => "Wrong values for 'lat' and/or 'lng' parameters.")));
+}
 
 // SQL request. The complexe part is here to compute the distance
 // between the position passed in the parameters and each store.
@@ -51,5 +60,4 @@ while( $store = mysqli_fetch_assoc($res) ) {
 }
 
 // We return the stores in JSON format.
-header('Content-type: application/json');
 echo json_encode($nearbyStores);
