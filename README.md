@@ -23,4 +23,4 @@ This store locator is a module you can fully integrate in your website, with you
 
 The main file of the plugin is the *jquery.storelocator.js* script. It works like every standard jQuery plugin, so if you're familiar with jQuery, you shouldn't experience any problem.
 
-To see a usage example of the plugin, please see the *exemple.html* file. It contains very detailled comments which will help you in the few steps to use the plugin.
+To see a usage example of the plugin, please see the *example/example.html* file. It contains very detailled comments which will help you in the few steps to use the plugin.
