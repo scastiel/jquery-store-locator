@@ -5,7 +5,7 @@
  * be called by the store locator plugin. It is very simple, but
  * should help you understand how you can integrate the plugin
  * in YOUR application.
- * 
+ *
  * We suppose here that you have a working MySQL server (provide
  * its connection information below), which contains a database
  * (storelocator), which itself contains a table, "stores". See
@@ -35,9 +35,9 @@ if( !$lat || !$lng )
 // SQL request. The complexe part is here to compute the distance
 // between the position passed in the parameters and each store.
 $sql = "SELECT id, name, address, zip, city, state, country, url, latitude, longitude,
-			((ACOS(SIN($lat * PI() / 180) * SIN(latitude * PI() / 180) + COS($lat * PI() / 180) * COS(latitude * PI() / 180) * COS(($lng - longitude) * PI() / 180)) * 180 / PI()) * 60 * 1.1515) AS distance 
-		FROM stores 
-		HAVING distance <= 10 
+			((ACOS(SIN($lat * PI() / 180) * SIN(latitude * PI() / 180) + COS($lat * PI() / 180) * COS(latitude * PI() / 180) * COS(($lng - longitude) * PI() / 180)) * 180 / PI()) * 60 * 1.1515) AS distance
+		FROM stores
+		HAVING distance <= 10
 		ORDER BY distance ASC";
 
 // Connexion to MySQL server.
@@ -47,6 +47,9 @@ if( !$mysqli ) {
 	header("$protocol 500 Internal Server Error");
 	die(json_encode(array('error' => "Database connection error.")));
 }
+
+// Setting up the data encoding as UTF-8.
+mysqli_set_charset($mysqli, 'utf8');
 
 // We keep the stores in this array.
 $nearbyStores = array();
