@@ -1,0 +1,33 @@
+{
+	"name": "storelctr",
+	"version": "1.0.3",
+	"title": "Simple jQuery Store Locator",
+	"author": {
+		"name": "Sébastien Castiel",
+		"email": "sebastien.castiel@gmail.com",
+		"url": "http://scastiel.github.io"
+	},
+	"licenses": [
+		{
+			"type": "LGPLv3",
+			"url": "http://opensource.org/licenses/LGPL-3.0"
+		},
+		{
+			"type": "Hosted",
+			"url": "http://www.binpress.com/license/read/id/2579/app/2060"
+		},
+		{
+			"type": "Developer",
+			"url": "http://www.binpress.com/license/read/id/2580/app/2060"
+		}
+	],
+	"dependencies": {
+		"jquery": ">=1.9.0"
+	},
+	"description": "This store locator is a module you can fully integrate in your website, with your design and with your backend. With just a few configuration you'll get a working store locator for your business, which uses the Google Maps API. You can also customize it the way you want it to be.",
+	"keywords": [ "store", "locator", "find", "map" ],
+	"homepage": "http://www.binpress.com/app/simple-jquery-store-locator/2060?ad=33854",
+	"docs": "http://www.binpress.com/app/simple-jquery-store-locator/2060?ad=33854",
+	"demo": "http://www.binpress.com/app/demo/app/2060?ad=33854",
+	"download": "http://www.binpress.com/app/simple-jquery-store-locator/2060/downloads?ad=33854"
+}

@@ -28,6 +28,6 @@ The plugin license is LGPL for non-commercial use (see LICENSE.txt). Want a comm
 
 ## Usage
 
-The main file of the plugin is the *jquery.storelocator.js* script. It works like every standard jQuery plugin, so if you're familiar with jQuery, you shouldn't experience any problem.
+The main file of the plugin is the *jquery.storelctr.js* script. It works like every standard jQuery plugin, so if you're familiar with jQuery, you shouldn't experience any problem.
 
 To see a usage example of the plugin, please see the *example/example.html* file. It contains very detailled comments which will help you in the few steps to use the plugin.
