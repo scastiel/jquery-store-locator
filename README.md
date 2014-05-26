@@ -4,7 +4,7 @@ This store locator is a module you can fully integrate in your website, with you
 
 ## Demo
 
-A demo is available [here](http://scastiel.github.io/jquery-store-locator/demo.html).
+A demo is available [here](http://www.binpress.com/app/demo/app/2060?ad=33854).
 
 ## License
 
